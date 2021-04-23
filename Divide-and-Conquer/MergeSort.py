@@ -1,5 +1,7 @@
-#Merge sort
-#Return list with elements sorted from smallest to largest
+# =============================================================================
+# Merge sort
+# Return list with elements sorted from smallest to largest
+# =============================================================================
 
 def MergeSort(A):
     n=len(A)
@@ -30,7 +32,7 @@ def Merge(B,C,n,m):
     return D
 
 
-#checking
+#checking/example
 from random import sample
 A=sample(range(-50000,50000),10001)
 MergeSort(A) == sorted(A)  #True

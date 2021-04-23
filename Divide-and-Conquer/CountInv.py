@@ -1,7 +1,8 @@
-#Counting inversions
-#Compute and return the number of inversions in a list in O(nlogn)-time
-#Inversion defined as the event of A[i]>A[j] where i<j
-
+# =============================================================================
+# Counting inversions
+# Compute and return the number of inversions in a list in O(nlogn)-time
+# Inversion defined as the event of A[i]>A[j] where i<j
+# =============================================================================
 
 #input: list A
 #outputs: (sorted list A, number of inversions in A)

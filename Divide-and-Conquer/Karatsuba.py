@@ -1,8 +1,9 @@
-#Karatsuba multiplication algorithm
-#Positive integers multiplication in O(nlogn)-time where n is number of digits
-
-#Note: algo written to read numerical strings instead of integers, so that
-#large numbers (over 64-bits) can also be handled. see example at the bottom
+# =============================================================================
+# Karatsuba multiplication algorithm
+# Positive integers multiplication in O(nlogn)-time where n is number of digits
+# =============================================================================
+# Note: algo written to read numerical strings instead of integers, so that
+# large numbers (over 64-bits as int) can also be handled. see example at the bottom
 
 
 #inputs: x and y numerical strings of positive integers
@@ -90,7 +91,7 @@ def add(x,y):
 
 
 
-#checking
+#checking/example
 from random import sample
 A=sample(range(1,1000000),2)
 Karatsuba(str(A[0]),str(A[1])) == str(A[0]*A[1])  #True

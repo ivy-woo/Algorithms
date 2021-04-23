@@ -1,7 +1,8 @@
-#Randomized selection algorithm
-#Return the k-th smallest element in the input array A in linear time
-#Note: array A is partially sorted in-placed
-
+# =============================================================================
+# Randomized selection algorithm
+# Return the k-th smallest element in the input array A in linear time
+# =============================================================================
+# Note: array A is partially sorted in-place
 
 def Selection(A,k):
     k-=1  #because first element has index 0
@@ -45,7 +46,7 @@ def partition(A,n):
     return i-1  #return pivot's updated index
 
 
-#checking
+#checking/example
 from random import sample
 N=10001
 A=sample(range(-50000,50000),N)

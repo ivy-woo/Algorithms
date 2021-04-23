@@ -1,6 +1,7 @@
-#Randomized quick sort
-#Sorting list elements from smallest to largest in-place
-
+# =============================================================================
+# Randomized quick sort
+# Sorting list elements from smallest to largest in-place
+# =============================================================================
 
 #inputs: list A, integers l and r
 #sort elements between A[l] and A[r] inclusive
@@ -38,7 +39,7 @@ def partition(A,l,r):
     return i-1  #return pivot's updated index
 
 
-#checking
+#checking/example
 from random import sample
 A=sample(range(-50000,50000),10001)
 B = sorted(A)
