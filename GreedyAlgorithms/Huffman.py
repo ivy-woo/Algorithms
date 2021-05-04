@@ -31,7 +31,6 @@ from random import sample
 n = 20  #set number of symbols
 A = sample(range(1,100),n)
 T = Huffman(A)
-T.depth  #encoding length of each symbol
-T.avgdepth()  #the (minimum) average encoding length
-for i in range(n):
-    print(T.traverse(i))  #print the prefix-free binary code of the n symbols
+code, length, avglength = T.traverse()   
+#code, length = binary code and encoding length for each symbol (in order of appearance in A), 
+#avglength = the (minimum) weighted average encoding length
