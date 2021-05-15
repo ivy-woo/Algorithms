@@ -1,115 +1,115 @@
 # =============================================================================
 # Kosaraju's algorithm
-# Compute the strongly connected components (SCC) in a directed graph in linear time
+# Given a directed graph G=(V,E), compute the strongly connected components (SCC) in linear time
 # =============================================================================
+#%%
 
-#read in data in txt file. #file contains directed edges of a graph
-def loadGraph(path): 
-    with open(path) as file:
-        G = file.readlines()
-#        G = [[int(n) for n in re.split('\t|,\d*|\n',G[i]) if n] for i in range(len(G))]
-        G = [[int(n) for n in G[i].split()] for i in range(len(G))]
-    return G
-
-#from itertools import chain
-#node = set(chain(*G))
-#n = len(node)
-
-
-#preprocessing functions
-
-#make adjacency list from input G being edges
-def makeList(G):
-    adjlist = []
-    idx=1
-    i=0
-    for idx in range(1,G[-1][0]+1):
-        adjlist.append([idx])
-        while G[i][0]==idx:
-            adjlist[idx-1].append(G[i][1])
-            i+=1
-            if i==len(G):
-                break
-    return adjlist
-
-
-#reverse the edges
-def revEdges(G):
-    rev = [G[i][::-1] for i in range(len(G))]  #reverse edges
-    rev.sort(key=lambda x: x[0])
-    return rev
-
-
-#make adjacency list for graph with reversed edges
-def revList(G):
-    rev = revEdges(G)
-    return makeList(rev)
-
-
-#compute SCC
-
-#Kosaraju algorithm using 2 DFS to compute SCC in a graph
-#Input: array G containing edges of an undirected graph
-#Output: list representing the repective SCC each node belongs to
-#e.g. for G with 4 nodes, scc=[1,2,2,2] means node 1 in SCC1 and node 2,3,4 in SCC2
-def Kosaraju(G):
-    Glist = makeList(G)  #make adjacency list for G
-    Grev = revList(G)  #make adjacency list for G with reversed edges
-    n = Glist[-1][0]  #number of nodes
-    order = TopoSort(Grev,n)  #topological sort for Grev
-    unexplored = [True for i in range(n)]
-    scc = [0]*n
+#Input: array E containing edges of a directed graph
+#Output: dictionary where key=nodes' indices, value=SCC group of the node
+#e.g. for |V|=4, {1:1,2:2,3:2,4:2} means node 1 in SCC1 and node 2,3,4 in SCC2
+#Time complexity: O(m+n) (assume healthy data and hash functions for dictionaries), m=|E|, n=|V|
+def Kosaraju(E):
+    G = makeList(E)  #make adjacency list from edges
+    seq = topoSort(G)  #topological sort for the reverse graph of G
     count = 0
-    for i in order:
-        if unexplored[i]:
-            count+=1
-            DFSscc(Glist,scc,unexplored,count,i)
-    return scc
+    for i in reversed(seq):   #loop in order of topological order, from smallest to largest
+        if G[i]['flag2']:
+            count += 1
+            DFSscc(G,count,i)
+    output = {}
+    for i in list(G.keys()):
+        output[i] = G[i]['scc']
+    return output
 
 
-#input adjacency list and node i, search for and mark all nodes in the same SCC as i by DFS
-def DFSscc(G,scc,unexplored,count,i):
-    unexplored[i] = False
-    scc[i] = count
-    for j in G[i][1:]:
-        if unexplored[j-1]:
-            DFSscc(G,scc,unexplored,count,j-1)
-    return
+#convert list of edges to adjacency list representation
+#return a dictionary of dictionaries, one for each node, with global key being some node i,
+#secondary keys 'in' for tails of i's incoming edges, 'out' for heads of i's outgoing edges,
+#'flag1' and 'flag2' for signaling whether i is not yet visited in the upcoming 1st and 2nd DFS
+def makeList(E):
+    adjlist = {}
+    for edge in E:
+        #for tail i of the edge
+        try:   #if dict for i already exists, append to list 'out'
+            adjlist[edge[0]]['out'].append(edge[1])
+        except KeyError:   #else instantiate dict for i
+            adjlist[edge[0]] = {}
+            adjlist[edge[0]]['out'] = [edge[1]]   #heads of i's outgoing edges
+            adjlist[edge[0]]['in'] = []   #tails of i's incoming edges
+            adjlist[edge[0]]['flag1'] = True   #to mark i is not yet visited in 1st DFS
+            adjlist[edge[0]]['flag2'] = True   #to mark i is not yet visited in 2nd DFS
+        #do the same for head of the edge
+        try:
+            adjlist[edge[1]]['in'].append(edge[0])
+        except KeyError:
+            adjlist[edge[1]] = {}
+            adjlist[edge[1]]['out'] = []
+            adjlist[edge[1]]['in'] = [edge[0]]
+            adjlist[edge[1]]['flag1'] = True
+            adjlist[edge[1]]['flag2'] = True
+    return adjlist   #dictionary of dictionaries, one for each node
 
 
-#input adjacency list, return topological ordering for all nodes with values 0:n-1 by DFS
-def TopoSort(G,n):
-    order = [0]*n
-    unexplored = [True for i in range(n)]
-    label = [n-1]  #as list for convenience of passing with ref
-    for i in range(n):
-        if unexplored[i]:
-            DFStopo(G,order,unexplored,label,i)
-    return order
-    
+#variant of the topological ordering algorithm
+#input adjacency list, return a list 'seq' of the sequence of nodes when sorting by their 
+#topological order from largest to smallest. 
+def topoSort(G):
+    seq = []
+    for i in list(G.keys()):
+        if G[i]['flag1']:
+            DFStopo(G,seq,i)
+    return seq
 
-def DFStopo(G,order,unexplored,label,i):
-    unexplored[i] = False
-    for j in G[i][1:]:
-        if unexplored[j-1]:
-            DFStopo(G,order,unexplored,label,j-1)
-    order[i] = label[0]
-    label[0] -= 1
+
+#DFS recursion, to append nodes to 'seq' in decreasing order of nodes' topological order
+def DFStopo(G,seq,i):
+    G[i]['flag1'] = False   #mark i as visited in 1st round
+    #loop list of *incoming* edges since considering the reversed graph
+    for j in G[i]['in']:
+        if G[j]['flag1']:
+            DFStopo(G,seq,j)
+    seq.append(i)   #append i to 'seq'
     return 
 
 
+#DFS to search and mark the scc group for all nodes
+def DFSscc(G,count,i):
+    G[i]['flag2'] = False   #mark i as visited in 1st round
+    G[i]['scc'] = count   #new key for i recording its scc group
+    for j in G[i]['out']:
+        if G[j]['flag2']:
+            DFSscc(G,count,j)
+    return
+
+
+
+#%% additional function
+
 from collections import Counter
-#return sizes of the biggest 5 SCC, append 0 if there exist <5 SCC
-def topsize(scc):
+#return the sizes of the biggest 5 SCC, append 0 if there exist <5 SCC
+def topSize(scc):
     size = [0]*5
-    cnt = Counter(scc)
+    cnt = Counter(scc.values())
     n = min(5,max(cnt))
     size[:n] = [i for _,i in cnt.most_common()[:n]]
     return size
 
 
-#example
-G = loadGraph('examples\SCC3.txt')
-scc = Kosaraju(G)
-topsize(scc)
+# =============================================================================
+#%% function to read example data (in examples/)
 
+#each line "i j" in txt file is an edge from node i to j, edges sorted by the tail i's index
+#nodes' indices can be anything hashable
+def loadGraph(path): 
+    with open(path) as file:
+        E = file.readlines()
+        E = [[int(n) for n in E[i].split()] for i in range(len(E))]
+    return E
+
+
+#%% example
+
+#see plot in examples/ for visualization of the graph
+G = loadGraph('examples/Kosaraju.txt')   #file contains edges of a graph with 200 nodes
+scc = Kosaraju(G)   #dictionary, key=node, value=SCC group
+topSize(scc)   #sizes of the 4 SCC in the graph
