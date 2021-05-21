@@ -1,8 +1,12 @@
 # =============================================================================
 # Merge sort
-# Return list with elements sorted from smallest to largest
+# Sorting elements sorted from smallest to largest
 # =============================================================================
+#%%
 
+#Input: list A containing n numbers
+#Output: list of the n elements sorted from smallest to largest
+#Time complexity: O(nlogn)
 def MergeSort(A):
     n=len(A)
     if n==1:
@@ -32,11 +36,8 @@ def Merge(B,C,n,m):
     return D
 
 
-#checking/example
+# =============================================================================
+#%% checking/example
 from random import sample
 A=sample(range(-50000,50000),10001)
-MergeSort(A) == sorted(A)  #True
-
-#timing
-#%time B=MergeSort(A)
-
+MergeSort(A) == sorted(A)   #True

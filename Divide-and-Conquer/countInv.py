@@ -1,23 +1,26 @@
 # =============================================================================
 # Counting inversions
-# Compute and return the number of inversions in a list in O(nlogn)-time
+# Compute and return the number of inversions in an array of n elements in O(nlogn)-time
 # Inversion defined as the event of A[i]>A[j] where i<j
 # =============================================================================
+#%%
 
-#input: list A
-#outputs: (sorted list A, number of inversions in A)
-def CountInv(A):
+#Input: list A of unsorted real numbers
+#Output: tuple (A,n), A=list of sorted inputs, n=number of inversions
+#Time complexity: O(nlogn)
+def countInv(A):
     n=len(A)
     if n==0 or n==1:
         return A, 0
     m=n//2
-    Lsort, Linv = CountInv(A[:m])  #recurse on first half of A
-    Rsort, Rinv = CountInv(A[m:])  #recurse on second half of A 
+    Lsort, Linv = countInv(A[:m])  #recurse on first half of A
+    Rsort, Rinv = countInv(A[m:])  #recurse on second half of A 
     #merge first and second half, count inversions involving both halves
-    sort, Sinv = CountSplitInv(Lsort,Rsort,n,m)  
+    sort, Sinv = countSplitInv(Lsort,Rsort,n,m)  
     return sort, Linv+Rinv+Sinv
 
-def CountSplitInv(Lsort,Rsort,n,m):
+
+def countSplitInv(Lsort,Rsort,n,m):
     i = 0
     j = 0
     count = 0
@@ -39,8 +42,9 @@ def CountSplitInv(Lsort,Rsort,n,m):
     return sort, count
 
 
+#%%
 #Brute-force search (in O(n^2)-time) for checking
-def BFCountInv(A):
+def BFcountInv(A):
     n=len(A)
     count=0
     for i in range(n-1):
@@ -50,9 +54,11 @@ def BFCountInv(A):
     return count
 
 
-#timing and cross-checking
+# =============================================================================
+#%% timing and cross-checking
+
 from random import sample
-A=sample(range(-50000,50000),10001)
-%time B=CountInv(A)[1]
-%time C=BFCountInv(A)  #Brute-force search is very much slower
+A=sample(range(-50000,50000),10001)   #randomly pick integers from specified range
+%time B=countInv(A)[1]   #divide-and-conquer
+%time C=BFcountInv(A)   #brute-force search, much slower
 B==C  #True, two algo return same result

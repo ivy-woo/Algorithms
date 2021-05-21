@@ -2,9 +2,11 @@
 # Randomized quick sort
 # Sorting list elements from smallest to largest in-place
 # =============================================================================
+#%%
 
-#inputs: list A, integers l and r
-#sort elements between A[l] and A[r] inclusive
+#Input: list A, integers l and r
+#Post-condition: elements A[l] to A[r] inclusive sorted from smallest to largest
+#Time complexity: O(nlogn), n=r-l+1
 def QuickSort(A,l,r):
     if l>=r:
         return
@@ -14,6 +16,7 @@ def QuickSort(A,l,r):
     QuickSort(A,l,j-1)
     QuickSort(A,j+1,r)
     return
+
 
 #adopt uniform randomness to pick pivot
 from random import randint
@@ -38,14 +41,11 @@ def partition(A,l,r):
     swap(A,l,i-1)
     return i-1  #return pivot's updated index
 
-
-#checking/example
+# =============================================================================
+#%% checking/example
 from random import sample
 A=sample(range(-50000,50000),10001)
 B = sorted(A)
 QuickSort(A,0,len(A)-1)  #sorting in-place
 A==B  #True
-
-QuickSort(A)
-%time B=QuickSort(A,0,len(A)-1)
 

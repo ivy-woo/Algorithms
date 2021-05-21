@@ -3,6 +3,7 @@
 # in which the n vertices are part of k binary trees for some k in [1,2...,n]. 
 # =============================================================================
 # Made for use in Huffman code.
+#%%
 
 #Intialization:
     #given array A containing weights of each node,
@@ -13,8 +14,8 @@
     #.traverse(): return (1) the binary code of all leaf nodes in order of appearance in A 
                  #(assume left path = 0, right path = 1), (2) depth of all leaf nodes, and 
                  #(3) the weighted average depth of the tree(s)
-    
-class binaryTrees2:
+
+class binaryTrees:
     
     def __init__(self, weights):
         self.nleaf = len(weights)   #number of leaves
@@ -84,5 +85,3 @@ class binaryTrees2:
         depth = [i for _,i in sorted(depth)]
         avgdepth = sum([i*j for i,j in zip(self.weights[:self.nleaf],depth)])/self.nleaf   #weighted average depth
         return code, depth, avgdepth
-
-    

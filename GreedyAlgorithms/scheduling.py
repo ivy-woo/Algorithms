@@ -4,11 +4,10 @@
 # l_i's for i in [1,2,...,n], compute the sequence of completing the jobs s.t.
 # the weighted sum of completion time (WSCT) is minimized.
 # =============================================================================
-
-
+#%%
 # GreedyRatio:
 # schedule the n jobs in A using the ratio of weight and length of jobs, break ties arbitrarily. 
-# time complexity: O(nlogn)
+# Time complexity: O(nlogn)
 
 #returns the sequence of jobs in A to be completed
 #if completionTime=True, returns also WSCT
@@ -27,11 +26,12 @@ def GreedyRatio(A, completionTime=True):
     return seq, wsct
 
 
+#%%
 # GreedyDiff:
 # schedule the n jobs in A using the difference of weight and length of jobs,
 # break ties by scheduling the job with the heavier weight first. 
 # *****This algorithm does NOT always return the optimal solution*****
-# time complexity: O(nlogn)
+# Time complexity: O(nlogn)
 
 #returns the sequence of jobs in A to be completed
 #if completionTime=True, returns also WSCT
@@ -54,17 +54,19 @@ def GreedyDiff(A, completionTime=True):
 
 
 # =============================================================================
-#example
+#%% function to read example data (in examples/)
 
-A = loadData('example/scheduling.txt')  #example containing 10 jobs for easy checking
-seqR, wsctR = GreedyRatio(A)  #seqR=[8,9,0,6,5...], wsctR=104255 (optimal)
-seqD, wsctD = GreedyDiff(A)  #seqD=[9,8,0,6,5,...], wsctD=104913 (not optimal)
-
-
-#function to read in data in txt file, where in each line n, tuple (w,l) represents 
-#job n's weight being w and its length being l.
+#for each line n, tuple (w,l) means job n's weight = w and its length = l.
 def loadData(path): 
     with open(path) as file:
         A = file.readlines()
-        A = [[int(n) for n in A[i].split()] for i in range(1,len(A))]
+        A = [[int(n) for n in A[i].split()] for i in range(len(A))]
     return A
+
+
+#%% example
+
+A = loadData('example/scheduling.txt')  #file contains 10 jobs for easy checking
+seqR, wsctR = GreedyRatio(A)  #seqR=[8,9,0,6,5...], wsctR=104255 (optimal)
+seqD, wsctD = GreedyDiff(A)  #seqD=[9,8,0,6,5,...], wsctD=104913 (not optimal)
+

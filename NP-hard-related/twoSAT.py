@@ -15,8 +15,8 @@ def twoSAT(constraints):
     scc = Kosaraju(edges)   #see script '../Others/Kosaraju.py'
     for i in scc.keys():
         if i>0 and scc[i]==scc[-i]:   #if there exists any i, where i implies not i and not i implies i
-            return False   #then there is no solution satisfying the set of constraints
-    return True
+            return scc, False   #then there is no solution satisfying the set of constraints
+    return scc, True
 
 
 #translate the constraints to edges of a directed graph 
@@ -44,6 +44,7 @@ def loadData(path):
 
 #%% example
 
-##see plot in examples/ for visualization of constrains as graph
 constraints = loadData('examples/twoSAT.txt')   #file contains 100 constraints
-twoSAT(constraints)   #exists no solution
+scc, sol = twoSAT(constraints)   #exists no solution   
+#see plot in examples/ for visualization of constraints as graph
+#the scc with conflicting constraints is colored red

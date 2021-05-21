@@ -1,12 +1,17 @@
 # =============================================================================
 # Randomized selection algorithm
-# Return the k-th smallest element in the input array A in linear time
+# Compute the k-th smallest element in the input array A in linear time
 # =============================================================================
 # Note: array A is partially sorted in-place
+#%%
 
+#Input: list A containing n numbers, integer k
+#Output: the k-th smallest element in A
+#Time complexity: O(n)
 def Selection(A,k):
     k-=1  #because first element has index 0
     return RSelect(A,k)
+
 
 #randomized selection
 def RSelect(A,k):
@@ -20,12 +25,15 @@ def RSelect(A,k):
         return A[j]
     elif j>k:
         return RSelect(A[:j],k)
-    else: return RSelect(A[j+1:],k-j-1)
+    else: 
+        return RSelect(A[j+1:],k-j-1)
+
 
 #adopt uniform randomness to pick pivot
 from random import randint
 def choosePivot(n):
     return randint(0,n-1)
+
 
 #swap list elements A[i] and A[j]
 def swap(A,i,j):
@@ -33,6 +41,7 @@ def swap(A,i,j):
     A[i] = A[j]
     A[j] = temp
     return
+
 
 #postcondition: pivot locates at its correct position in A, i.e. all other 
 #elements precede(succeed) pivot if being smaller(larger) than pivot 
@@ -46,7 +55,9 @@ def partition(A,n):
     return i-1  #return pivot's updated index
 
 
-#checking/example
+
+# =============================================================================
+#%% checking/example
 from random import sample
 N=10001
 A=sample(range(-50000,50000),N)
@@ -54,7 +65,3 @@ B = sorted(A)
 i = randint(0,N-1)
 Selection(A,i) == B[i-1]  #True
 
-#timing
-#A=sample(range(-50000,50000),N)
-#i = randint(0,N-1)
-#%time K=Selection(A,i)

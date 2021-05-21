@@ -1,13 +1,14 @@
 # =============================================================================
-# Karatsuba multiplication algorithm
+# Karatsuba's multiplication algorithm
 # Positive integers multiplication in O(nlogn)-time where n is number of digits
 # =============================================================================
 # Note: algo written to read numerical strings instead of integers, so that
 # large numbers (over 64-bits as int) can also be handled. see example at the bottom
+#%%
 
-
-#inputs: x and y numerical strings of positive integers
-#output: multiple of x and y as string
+#Input: x and y numerical strings of positive integers
+#Output: multiple of x and y as string
+#Time complexity: O(nlogn)
 def Karatsuba(x,y):
     x,y,n = equalDigits(x,y)
     if n==1:
@@ -91,13 +92,15 @@ def add(x,y):
 
 
 
-#checking/example
-from random import sample
-A=sample(range(1,1000000),2)
-Karatsuba(str(A[0]),str(A[1])) == str(A[0]*A[1])  #True
+# =============================================================================
+#%% checking/example
 
-#large numbers
-A[0]='38420173497578724650122349587208642398463052394862034920438654873498748'
-A[1]='230290234693356278014352468704238621058923190'
-print(len(A[0]), len(A[1]))
-Karatsuba(str(A[0]),str(A[1]))  #can be handled in form of strings
+from random import sample
+A=sample(range(1,1000000),2)   #randomly pick 2 integers from the specified range
+Karatsuba(str(A[0]),str(A[1])) == str(A[0]*A[1])   #True
+
+#%% large integers
+A='38420173497578724650122349587208642398463052394862034920438654873498748'
+B='23029023469335627801435246870423862294691281058923190'
+print('A has {0} digits, B has {1} digits.'.format(len(A),len(B)))
+print('A*B=', Karatsuba(A,B))  #can be handled if using strings

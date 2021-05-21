@@ -4,7 +4,7 @@
 # with minimum average leaf depth, which represents the prefix-free binary code with
 # minimum average encoding length 
 # =============================================================================
-
+#%%
 import heapdict   #use heap from library
 
 #Input: array A containing weight of each symbol
@@ -12,7 +12,7 @@ import heapdict   #use heap from library
 #Time complexity: O(nlogn)
 def Huffman(A):
     #initialize a binary tree structure, where each symbol is a node and an individual tree
-    T = binaryTrees(A)   #see script 'binaryTrees.py'
+    T = binaryTrees(A)   #see script '../Others/binaryTrees.py'
     H = heapdict.heapdict()   #initialize heap
     for i in range(len(A)):
         H[i] = A[i]   #push all nodes into heap, key of node is its weight
@@ -25,12 +25,12 @@ def Huffman(A):
     
 
 # =============================================================================
-#example
+#%% example
 
 from random import sample
 n = 20  #set number of symbols
 A = sample(range(1,100),n)
 T = Huffman(A)
-code, length, avglength = T.traverse()   
+code, length, avglength = T.traverse()
 #code, length = binary code and encoding length for each symbol (in order of appearance in A), 
 #avglength = the (minimum) weighted average encoding length
