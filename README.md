@@ -11,8 +11,8 @@ The folders and files are listed below with brief descriptions:
 
 - `countInv`: counting the number of inversions in an array of $n$ elements in $O(n\log n)$-time.
 - `Karatsuba`: Karatsuba's algorithm, multiplication of two positive integers with $n$ digits in $O(n\log n)$-time.
-- `MergeSort`: sorting in $O(n\log n)$-time.
-- `QuickSort`: randomized quick sort in $O(n\log n)$-time.
+- `MergeSort`: sorting in $O(n\log n)$-time, where $n$ is number of elements.
+- `QuickSort`: randomized quick sort in $O(n\log n)$-time, where $n$ is number of elements.
 - `RSelect`: randomized selection, given an array of $n$ elements and some $k\in [1,2,\ldots,n]$, return the $k$-th smallest element in the array in $O(n)$-time.
 
 #### DynamicProgramming
@@ -23,7 +23,7 @@ The folders and files are listed below with brief descriptions:
 
 #### GreedyAlgorithms
 
-- `clustering`: given some nodes and the distance between any two of them, use Kruskal's minimum spanning tree algorithm (terminating early) to construct a minimum-spacing $k$-clustering. Implemented with disjoint set (defined in script `Others/disjointSet`) and running in $O(n\log n)$-time.
+- `clustering`: given $n$ nodes and the all-pairs distance, use Kruskal's minimum spanning tree algorithm (terminating early) to construct a minimum-spacing $k$-clustering. Implemented with disjoint set (defined in script `Others/disjointSet`) and running in $O(n\log n)$-time.
 - `Dijkstra`: Dijkstra's shortest distance algorithm. Given a directed graph $G=(V,E)$ with some non-negative edge length $l_e$ for all $e\in E$ and a starting vertex $v\in V$, compute the shortest distance from $v$ to all vertices in $G$. Implementation with heap, complexity being $O((m+n)\log n)$-time, where $m=|E|$ and $n=|V|$. 
 - `Huffman`: Huffman's algorithm for shortest encoding length. Given $n$ symbols of an alphabet $\Sigma$ and their real-valued weights, compute the $\Sigma$-tree with minimum average leaf depth, which represents the prefix-free binary code with minimum average encoding length. Implemented with tailor-made binary-trees structure (defined in script `Others/binaryTrees.py`) and heap, complexity being $O(n\log n)$-time. 
 - `Prim`: Prim's  minimum spanning tree algorithm. Given a connected undirected graph $G=(V,E)$ and some real-valued cost $C_e$ for each edge $e \in E$, compute the spanning tree $T$ with the minimum total cost $\sum_{e\in T} C_e$ in $O(mn\log n)$-time, where  $m=|E|$ and $n=|V|$. 
@@ -39,7 +39,7 @@ The folders and files are listed below with brief descriptions:
 
 - `binaryTrees`: self-defined binary-trees structure, tailor-made for Huffman code.
 - `disjointSet`: self-defined disjoint set.
-- `Kosaraju`: Kosaraju's algorithm. Given a directed graph $G=(V,E)$, compute the strongly connected components in the graph in $O(m+n)$-time*, where $m=|E|$ and $n=|V|$.  - to be tidied, example and graph ok
+- `Kosaraju`: Kosaraju's algorithm. Given a directed graph $G=(V,E)$, compute the strongly connected components in the graph in $O(m+n)$-time*, where $m=|E|$ and $n=|V|$. 
 - `MaxMinHeap`: self-defined max heap and min heap.
 - `medianMaintenance`: suppose $n$ data arrives consecutively, use two heaps (defined in script `Others/MaxMinHeap.py`) to update the median of the $i$ arrived data in $O(\log i)$-time in each round $i\in[1,2,\ldots,n]$.
 

@@ -54,6 +54,6 @@ def loadGraph(path):
 
 #%% example
 
-G = loadGraph('examples/Dijkstra8.txt')   #file contains graph with 200 nodes + 1200 edges
+G = loadGraph('examples/Dijkstra.txt')   #file contains graph with 200 nodes + 1200 edges
 d = Dijkstra(G,1)   #list of distance from node 1 to node v for all v in V
 

@@ -1,6 +1,8 @@
-#Define a max heap class and a min heap class
+# =============================================================================
+# Define a max heap class and a min heap class
+# =============================================================================
 
-
+#%%
 #Maxheap:
     #major object properties:
         #.size: number of elements in heap
@@ -8,7 +10,7 @@
     #major object methods:
         #.insert(x): insert key x into heap in O(logn)-time
         #.popMax(): remove and return maximum key from heap in O(logn)-time
-    
+
 class MaxHeap:
   
     def __init__(self):  
@@ -97,6 +99,7 @@ class MaxHeap:
             return pop
 
 
+#%%
 #MinHeap:
     #major object properties:
         #.size: number of elements in heap
