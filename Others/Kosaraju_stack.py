@@ -1,8 +1,11 @@
 # =============================================================================
 # Kosaraju's algorithm
-# Given a directed graph G=(V,E), compute the strongly connected components (SCC) in linear time
+# Given a directed graph G=(V,E), compute the strongly connected components (SCC) in linear time.
+# DFS implemented by iteration (with stack).
 # =============================================================================
 #%%
+
+from collections import deque   #use deque as stack (for better efficiency than list for large data)
 
 #Input: array E containing edges of a directed graph
 #Output: dictionary where key=nodes' indices, value=SCC group of the node
@@ -10,10 +13,10 @@
 #Time complexity: O(m+n) (assume healthy data and hash functions for dictionaries), m=|E|, n=|V|
 def Kosaraju(E):
     G = makeList(E)  #make adjacency list from edges
-    seq = topoSort(G)  #topological sort for the reverse graph of G
+    seq = topoSort(G)  #topological sort for the reverse graph of G by DFS
     count = 0
     for i in reversed(seq):   #loop in order of topological order, from smallest to largest
-        if G[i]['flag2']:
+        if G[i]['flag3']:
             count += 1
             DFSscc(G,count,i)
     output = {}
@@ -37,7 +40,8 @@ def makeList(E):
             adjlist[edge[0]]['out'] = [edge[1]]   #heads of i's outgoing edges
             adjlist[edge[0]]['in'] = []   #tails of i's incoming edges
             adjlist[edge[0]]['flag1'] = True   #to mark i is not yet visited in 1st DFS
-            adjlist[edge[0]]['flag2'] = True   #to mark i is not yet visited in 2nd DFS
+            adjlist[edge[0]]['flag2'] = True   #to mark i is not yet assigned an ordering in 1st DFS
+            adjlist[edge[0]]['flag3'] = True   #to mark i is not yet visited in 2nd DFS
         #do the same for head of the edge
         try:
             adjlist[edge[1]]['in'].append(edge[0])
@@ -47,38 +51,44 @@ def makeList(E):
             adjlist[edge[1]]['in'] = [edge[0]]
             adjlist[edge[1]]['flag1'] = True
             adjlist[edge[1]]['flag2'] = True
+            adjlist[edge[1]]['flag3'] = True
     return adjlist   #dictionary of dictionaries, one for each node
 
 
 #variant of the topological ordering algorithm
 #input adjacency list, return a list 'seq' of the sequence of nodes when sorting by their 
-#topological order from largest to smallest. 
+#topological order from largest to smallest. iterative DFS by stack.
 def topoSort(G):
     seq = []
-    for i in list(G.keys()):
-        if G[i]['flag1']:
-            DFStopo(G,seq,i)
+    for i in G.keys():
+        if G[i]['flag1']:   #if i not yet visited
+            stack = deque([i])   #push i
+            while len(stack)>0:
+                j = stack.pop()   #pop j
+                G[j]['flag1'] = False   #mark j as visited
+                end = True   #mark whether j is at the end of a DFS
+                for k in G[j]['in']:
+                    if G[k]['flag1']:   #if any deeper node k is not yet visited
+                        if end:
+                            end = False   #then j is not at the end
+                            stack.append(j)   #push j again for later revisit
+                        stack.append(k)   #push k
+                if end and G[j]['flag2']:   #if j is at the end and not yet assigned an ordering
+                    seq.append(j)   #append j to seq
+                    G[j]['flag2'] = False   #mark j has been assigned an ordering
     return seq
 
 
-#DFS recursion, to append nodes to 'seq' in decreasing order of nodes' topological order
-def DFStopo(G,seq,i):
-    G[i]['flag1'] = False   #mark i as visited in 1st round
-    #loop list of *incoming* edges since considering the reversed graph
-    for j in G[i]['in']:
-        if G[j]['flag1']:
-            DFStopo(G,seq,j)
-    seq.append(i)   #append i to 'seq'
-    return 
-
-
-#DFS to search and mark the scc group for all nodes
+#iterative DFS to search and mark the scc group for all nodes in node i's group
 def DFSscc(G,count,i):
-    G[i]['flag2'] = False   #mark i as visited in 1st round
-    G[i]['scc'] = count   #new key for i recording its scc group
-    for j in G[i]['out']:
-        if G[j]['flag2']:
-            DFSscc(G,count,j)
+    stack = deque([i])
+    while len(stack)>0:
+        j = stack.pop()   #pop j
+        G[j]['flag3'] = False   #mark j as visited in 2nd round
+        G[j]['scc'] = count   #new key for i recording its scc group
+        for k in G[j]['out']:
+            if G[k]['flag3']:   #if any deeper node k is not yet visited
+                stack.append(k)   #push k
     return
 
 

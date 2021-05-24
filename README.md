@@ -9,7 +9,7 @@ The folders and files are listed below with brief descriptions:
 
 #### Divide-and-Conquer
 
-- `countInv`: counting the number of inversions in an array of $n$ elements in $O(n\log n)$-time.
+- `countInv`: counting the number of inversions in an array of $n$ elements in *O(n log n)*-time.
 - `Karatsuba`: Karatsuba's algorithm, multiplication of two positive integers with $n$ digits in $O(n\log n)$-time.
 - `MergeSort`: sorting in $O(n\log n)$-time, where $n$ is number of elements.
 - `QuickSort`: randomized quick sort in $O(n\log n)$-time, where $n$ is number of elements.
@@ -39,7 +39,8 @@ The folders and files are listed below with brief descriptions:
 
 - `binaryTrees`: self-defined binary-trees structure, tailor-made for Huffman code.
 - `disjointSet`: self-defined disjoint set.
-- `Kosaraju`: Kosaraju's algorithm. Given a directed graph $G=(V,E)$, compute the strongly connected components in the graph in $O(m+n)$-time*, where $m=|E|$ and $n=|V|$. 
+- `Kosaraju_recur`: Kosaraju's algorithm. Given a directed graph $G=(V,E)$, compute the strongly connected components in the graph in $O(m+n)$-time*, where $m=|E|$ and $n=|V|$. DFS implemented with recursion. 
+- `Kosaraju_stack`: another implementation of the Kosaraju's algorithm (see above) with the same complexity of  $O(m+n)$-time*. DFS implemented with iteration (with which potential stack overflow can be avoided when computing very big graphs) using stacks. 
 - `MaxMinHeap`: self-defined max heap and min heap.
 - `medianMaintenance`: suppose $n$ data arrives consecutively, use two heaps (defined in script `Others/MaxMinHeap.py`) to update the median of the $i$ arrived data in $O(\log i)$-time in each round $i\in[1,2,\ldots,n]$.
 
